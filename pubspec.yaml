@@ -1,11 +1,11 @@
 name: ondoc_flutter_opentok
 description: OpenTok Flutter - a library for OpenTok iOS and Android SDKs.
 version: 0.0.7
-author: Indoor Solutions <genert.org@indoor.solutions>
-homepage: https://github.com/ninjasolutions/flutter_opentok
+homepage: https://github.com/ninjasolutions/ondoc_flutter_opentok
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
+  flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
   flutter:
@@ -20,5 +20,9 @@ dev_dependencies:
 
 flutter:
   plugin:
-    androidPackage: com.flutter_opentok
-    pluginClass: FlutterOpentokPlugin
+    platforms:
+      android:
+        package: com.flutter_opentok
+        pluginClass: FlutterOpentokPlugin
+      ios:
+        pluginClass: FlutterOpentokPlugin

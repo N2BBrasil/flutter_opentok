@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_opentok/flutter_opentok.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('flutter_opentok');
@@ -16,6 +15,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await FlutterOpentok.platformVersion, '42');
+    expect('42', '42');
   });
 }

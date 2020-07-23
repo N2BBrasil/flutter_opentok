@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_opentok/flutter_opentok.dart';
-import 'package:flutter_opentok_example/video_session.dart';
-import 'package:flutter_opentok_example/settings.dart';
+import 'package:ondoc_flutter_opentok/flutter_opentok.dart';
+import 'settings.dart';
+import 'video_session.dart';
 
 void main() => runApp(MyApp());
 

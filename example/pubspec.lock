@@ -69,13 +69,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_opentok:
-    dependency: "direct dev"
-    description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.0.7"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -109,6 +102,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  ondoc_flutter_opentok:
+    dependency: "direct dev"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.7"
   path:
     dependency: transitive
     description:
@@ -200,3 +200,4 @@ packages:
     version: "3.6.1"
 sdks:
   dart: ">=2.6.0 <3.0.0"
+  flutter: ">=1.10.0 <2.0.0"

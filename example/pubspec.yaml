@@ -15,7 +15,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_opentok:
+  ondoc_flutter_opentok:
     path: ../
 
 flutter:
