@@ -270,6 +270,7 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
 
     func didDropStream() {
         channelInvokeMethod("onDroppedStream", arguments: nil)
+        refreshViews()
     }
 
     func didCreatePublisherStream() {

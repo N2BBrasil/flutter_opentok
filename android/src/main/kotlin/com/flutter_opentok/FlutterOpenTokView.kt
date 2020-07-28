@@ -256,6 +256,7 @@ class FlutterOpenTokView(
 
     override fun didDropStream() {
         channelInvokeMethod("onDroppedStream", null)
+        refreshViews()
     }
 
     /// TouchListener
