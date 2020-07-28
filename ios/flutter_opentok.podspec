@@ -8,7 +8,7 @@ openTokLibraryVersion = '2.16.3'
 
 Pod::Spec.new do |s|
   s.name             = 'ondoc_flutter_opentok'
-  s.version          = '0.0.9'
+  s.version          = '0.0.10'
   s.summary          = 'Flutter library for OpenTok iOS and Android SDKs.'
   s.description      = <<-DESC
   Flutter library for OpenTok iOS and Android SDKs.
