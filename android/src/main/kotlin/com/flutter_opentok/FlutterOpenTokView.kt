@@ -30,7 +30,7 @@ class FlutterOpenTokView(
     val openTokView: FrameLayout
     var screenHeight: Int = LinearLayout.LayoutParams.MATCH_PARENT
     var screenWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT
-    var publisherHeight: Int = 500
+    var publisherHeight: Int = 350
     var publisherWidth: Int = 350
 
     init {
@@ -212,9 +212,8 @@ class FlutterOpenTokView(
         if (provider?.isAudioOnly == false && publisherView != null) {
             val pubView: View = publisherView!!
             openTokView.addView(pubView)
-            pubView.setOnTouchListener(this);
-            val layout = FrameLayout.LayoutParams(publisherWidth, publisherHeight, Gravity.TOP or Gravity.RIGHT)
-            layout.setMargins(20,20,20,20)
+            val layout = FrameLayout.LayoutParams(publisherWidth, publisherHeight, Gravity.BOTTOM or Gravity.RIGHT)
+            layout.setMargins(20,20,20,300)
             pubView.layoutParams = layout
             if (pubView is GLSurfaceView) {
                 (pubView as GLSurfaceView).setZOrderOnTop(true)

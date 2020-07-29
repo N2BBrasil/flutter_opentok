@@ -23,8 +23,8 @@ class FlutterOpenTokViewController: NSObject, FlutterPlatformView {
     var screenHeight: Int?
     var screenWidth: Int?
     
-    var publisherHeight: Int = 250
-    var publisherWidth: Int = 180
+    var publisherHeight: Int = 140
+    var publisherWidth: Int = 140
 
     var enablePublisherVideo: Bool?
 
@@ -307,10 +307,8 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
                 subView.removeFromSuperview()
             }
         }
-        
         if let view = self.subscriperView {
             openTokView.addSubview(view)
-
             view.backgroundColor = .black
             view.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(openTokView)
@@ -319,16 +317,16 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
                 make.right.equalTo(openTokView)
             }
         }
-        
         if provider.isAudioOnly == false {
             if let view = self.publisherView {
                 openTokView.addSubview(view)
-                
                 view.backgroundColor = .black
-                view.frame = CGRect(x: 0, y: 0, width: publisherWidth, height: publisherHeight)
-                view.isUserInteractionEnabled = true
-                let pan = UIPanGestureRecognizer(target: self, action: #selector(panView))
-                view.addGestureRecognizer(pan)
+                view.snp.makeConstraints { (make) -> Void in
+                    make.right.equalTo(openTokView)
+                    make.bottom.equalTo(openTokView).offset(-120)
+                    make.height.equalTo(publisherHeight)
+                    make.width.equalTo(publisherWidth)
+                }
             }
         }
     }
