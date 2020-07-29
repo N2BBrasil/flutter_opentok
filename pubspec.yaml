@@ -1,6 +1,6 @@
 name: ondoc_flutter_opentok
 description: OpenTok Flutter - a library for OpenTok iOS and Android SDKs.
-version: 0.0.10
+version: 0.0.11
 homepage: https://github.com/ninjasolutions/ondoc_flutter_opentok
 
 environment:
