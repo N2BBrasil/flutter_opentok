@@ -8,7 +8,7 @@ openTokLibraryVersion = '2.16.3'
 
 Pod::Spec.new do |s|
   s.name             = 'ondoc_flutter_opentok'
-  s.version          = '0.0.11'
+  s.version          = '0.0.12'
   s.summary          = 'Flutter library for OpenTok iOS and Android SDKs.'
   s.description      = <<-DESC
   Flutter library for OpenTok iOS and Android SDKs.
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.prepare_command = <<-CMD
       echo // Generated file, do not edit > Classes/UserAgent.h
       echo "#define LIBRARY_VERSION @\\"#{libraryVersion}\\"" >> Classes/UserAgent.h
-      echo "#define LIBRARY_NAME @\\"flutter_opentok\\"" >> Classes/UserAgent.h
+      echo "#define LIBRARY_NAME @\\"ondoc_flutter_opentok\\"" >> Classes/UserAgent.h
       echo "#define OPENTOK_LIBRARY_VERSION @\\"#{openTokLibraryVersion}\\"" >> Classes/UserAgent.h
     CMD
 end
