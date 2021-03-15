@@ -4,25 +4,24 @@
 require 'yaml'
 pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
 libraryVersion = pubspec['version'].gsub('+', '-')
-openTokLibraryVersion = '2.16.3'
 
 Pod::Spec.new do |s|
   s.name             = 'ondoc_flutter_opentok'
-  s.version          = '0.0.12'
-  s.summary          = 'Flutter library for OpenTok iOS and Android SDKs.'
+  s.version          = '0.0.13'
+  s.summary          = 'Ondoc Flutter library for OpenTok iOS and Android SDKs.'
   s.description      = <<-DESC
   Flutter library for OpenTok iOS and Android SDKs.
                        DESC
   s.homepage         = 'https://github.com/ninjasolutions/flutter_opentok'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'genert.org@ninja.solutions' }
+  s.author           = { 'Ondoc' => 'support@ondoc.me' }
   s.source           = { :path => '.' }
-  s.swift_version = '4.2'
+  s.swift_version = '5.0'
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'OpenTok', openTokLibraryVersion
-  s.dependency 'SnapKit', '~> 5.0.0'
+  s.dependency 'OpenTok', '2.19.0'
+  s.dependency 'SnapKit', '~> 5.0.1'
   s.static_framework = true
 
   s.ios.deployment_target = '10.0'
