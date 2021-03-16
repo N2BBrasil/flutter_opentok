@@ -1,5 +1,5 @@
 #import "FlutterOpentokPlugin.h"
-#import <ondoc_flutter_opentok/ondoc_flutter_opentok-Swift.h>
+#import <ondoc_flut_opentok/ondoc_flut_opentok-Swift.h>
 #import "UserAgent.h"
 
 @implementation FlutterOpentokPlugin
