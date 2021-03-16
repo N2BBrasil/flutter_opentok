@@ -6,12 +6,10 @@ pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
 libraryVersion = pubspec['version'].gsub('+', '-')
 
 Pod::Spec.new do |s|
-  s.name             = 'ondoc_flutter_opentok'
-  s.version          = '0.0.13'
-  s.summary          = 'Ondoc Flutter library for OpenTok iOS and Android SDKs.'
-  s.description      = <<-DESC
-  Flutter library for OpenTok iOS and Android SDKs.
-                       DESC
+  s.name             = 'ondoc_flut_opentok'
+  s.version          = '0.0.14'
+  s.summary          = 'Ondoc Opentok Flutter library'
+  s.description      = 'Ondoc Opentok Flutter library'
   s.homepage         = 'https://github.com/ninjasolutions/flutter_opentok'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Ondoc' => 'support@ondoc.me' }
