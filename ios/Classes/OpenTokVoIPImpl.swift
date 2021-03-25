@@ -364,8 +364,6 @@ extension OpenTokVoIPImpl: OTSessionDelegate {
 
     public func session(_: OTSession, connectionDestroyed connection: OTConnection) {
         os_log("[OTSubscriberDelegate] %s", type: .info, #function)
-
-        disconnectSession()
     }
 
     public func session(_: OTSession, receivedSignalType type: String?, from connection: OTConnection?, with string: String?) {

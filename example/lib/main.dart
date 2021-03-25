@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ondoc_flutter_opentok/flutter_opentok.dart';
+import 'package:ondoc_flut_opentok/flutter_opentok.dart';
+
 import 'settings.dart';
 import 'video_session.dart';
 
@@ -123,8 +124,12 @@ class _MyAppState extends State<MyApp> {
   Widget _viewRows() {
     List<Widget> views = _getRenderViews();
     if (views.isNotEmpty) {
-      return Container (
-        child: Expanded(child: views[0]),
+      return Container(
+        child: Container(
+          child: views[0],
+          height: 200,
+          width: 200,
+        ),
       );
     }
 
@@ -151,16 +156,14 @@ class _MyAppState extends State<MyApp> {
                         padding:
                             EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                         child: Row(mainAxisSize: MainAxisSize.min, children: [
-                          Flexible(
-                              child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.yellowAccent,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Text(_infoStrings[index],
-                                      style:
-                                          TextStyle(color: Colors.blueGrey))))
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.yellowAccent,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(_infoStrings[index],
+                                  style: TextStyle(color: Colors.blueGrey)))
                         ]));
                   })),
         ));
@@ -174,6 +177,14 @@ class _MyAppState extends State<MyApp> {
 
     OTFlutter.onSessionDisconnect = () {
       print("onSessionDisconnect");
+    };
+
+    OTFlutter.onCreateStream = () {
+      print("Subscriber entro");
+    };
+
+    OTFlutter.onDroppedStream = () {
+      print("Subscriber saiu");
     };
 
     var publisherSettings = OTPublisherKitSettings(

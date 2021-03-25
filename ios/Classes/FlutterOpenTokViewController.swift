@@ -266,6 +266,7 @@ extension FlutterOpenTokViewController: FlutterViewControllerImpl {
 extension FlutterOpenTokViewController: VoIPProviderDelegate {
     func didCreateStream() {
         channelInvokeMethod("onCreateStream", arguments: nil)
+        refreshViews()
     }
 
     func didDropStream() {
