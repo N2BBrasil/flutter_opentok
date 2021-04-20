@@ -8,9 +8,9 @@ part of 'flutter_opentok.dart';
 
 OpenTokConfiguration _$OpenTokConfigurationFromJson(Map<String, dynamic> json) {
   return OpenTokConfiguration(
-    token: json['token'] as String,
-    apiKey: json['apiKey'] as String,
-    sessionId: json['sessionId'] as String,
+    token: json['token'] as String?,
+    apiKey: json['apiKey'] as String?,
+    sessionId: json['sessionId'] as String?,
   );
 }
 
@@ -25,10 +25,10 @@ Map<String, dynamic> _$OpenTokConfigurationToJson(
 OTPublisherKitSettings _$OTPublisherKitSettingsFromJson(
     Map<String, dynamic> json) {
   return OTPublisherKitSettings(
-    name: json['name'] as String,
-    audioTrack: json['audioTrack'] as bool,
-    videoTrack: json['videoTrack'] as bool,
-    audioBitrate: json['audioBitrate'] as int,
+    name: json['name'] as String?,
+    audioTrack: json['audioTrack'] as bool?,
+    videoTrack: json['videoTrack'] as bool?,
+    audioBitrate: json['audioBitrate'] as int?,
     cameraResolution: _$enumDecodeNullable(
         _$OTCameraCaptureResolutionEnumMap, json['cameraResolution']),
     cameraFrameRate: _$enumDecodeNullable(
@@ -49,36 +49,41 @@ Map<String, dynamic> _$OTPublisherKitSettingsToJson(
           _$OTCameraCaptureFrameRateEnumMap[instance.cameraFrameRate],
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$OTCameraCaptureResolutionEnumMap = {

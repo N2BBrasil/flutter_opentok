@@ -28,25 +28,25 @@ class OTFlutter {
 
   // Core Events
   /// Triggered before creating OpenTok session.
-  static VoidCallback onWillConnect;
+  static VoidCallback? onWillConnect;
 
   /// Occurs when the client connects to the OpenTok session.
-  static VoidCallback onSessionConnect;
+  static VoidCallback? onSessionConnect;
 
   /// Occurs when the client disconnects from the OpenTok session.
-  static VoidCallback onSessionDisconnect;
+  static VoidCallback? onSessionDisconnect;
 
   /// Occurs when the subscriber video is added to renderer.
-  static VoidCallback onReceiveVideo;
+  static VoidCallback? onReceiveVideo;
 
   /// Occurs when subscriber stream has been created.
-  static VoidCallback onCreateStream;
+  static VoidCallback? onCreateStream;
 
   /// Occurs when subscriber stream has been dropped.
-  static VoidCallback onDroppedStream;
+  static VoidCallback? onDroppedStream;
 
   /// Occurs when publisher stream has been created.
-  static VoidCallback onCreatePublisherStream;
+  static VoidCallback? onCreatePublisherStream;
 
 
   // Core Methods
@@ -157,10 +157,10 @@ class OTFlutter {
   ///
   static Widget createNativeView(
     int uid, {
-    OTPublisherKitSettings publisherSettings,
-    int width,
-    int height,
-    Function(int viewId) created,
+    OTPublisherKitSettings? publisherSettings,
+    int? width,
+    int? height,
+    Function(int viewId)? created,
   }) {
     Map<String, dynamic> creationParams = {};
 
@@ -222,55 +222,55 @@ class OTFlutter {
 
   // Miscellaneous Methods
   /// Gets the SDK version.
-  Future<String> getSdkVersion() async {
-    final String version = await channel.invokeMethod('getSdkVersion');
+  Future<String?> getSdkVersion() async {
+    final String? version = await channel.invokeMethod('getSdkVersion');
     return version;
   }
 
   // CallHandler
   Future<dynamic> _handleMethodCall(MethodCall call) async {
-    Map values = call.arguments;
+    Map? values = call.arguments;
 
     switch (call.method) {
       case 'onSessionConnect':
         if (onSessionConnect != null) {
-          onSessionConnect();
+          onSessionConnect!();
         }
         break;
 
       case 'onSessionDisconnect':
         if (onSessionDisconnect != null) {
-          onSessionDisconnect();
+          onSessionDisconnect!();
         }
         break;
 
       case 'onReceiveVideo':
         if (onReceiveVideo != null) {
-          onReceiveVideo();
+          onReceiveVideo!();
         }
         break;
 
       case 'onCreateStream':
         if (onCreateStream != null) {
-          onCreateStream();
+          onCreateStream!();
         }
         break;
 
       case 'onCreatePublisherStream':
         if (onCreatePublisherStream != null) {
-          onCreatePublisherStream();
+          onCreatePublisherStream!();
         }
         break;
 
       case 'onWillConnect':
         if (onWillConnect != null) {
-          onWillConnect();
+          onWillConnect!();
         }
         break;
 
       case 'onDroppedStream':
         if (onDroppedStream != null) {
-          onDroppedStream();
+          onDroppedStream!();
         }
         break;
 
@@ -283,8 +283,8 @@ class OTFlutter {
     channel.setMethodCallHandler(null);
   }
 
-  Future<String> get platformVersion async {
-    final String version = await channel.invokeMethod('getPlatformVersion');
+  Future<String?> get platformVersion async {
+    final String? version = await channel.invokeMethod('getPlatformVersion');
     return version;
   }
 }
@@ -295,14 +295,14 @@ const int OpenTokVideoBitrateCompatible = -1;
 @JsonSerializable()
 class OpenTokConfiguration {
   /// The token generated for this connection.
-  final String token;
+  final String? token;
 
   /// Your OpenTok API key.
-  final String apiKey;
+  final String? apiKey;
 
   /// The [session ID](http://tokbox.com/opentok/tutorials/create-session)
   /// of this instance. This is an immutable value.
-  final String sessionId;
+  final String? sessionId;
 
   OpenTokConfiguration({this.token, this.apiKey, this.sessionId});
 
@@ -366,7 +366,7 @@ class OTPublisherKitSettings {
   /// The name of the publisher video. The <[OTStream name]> property
   /// for a stream published by this publisher will be set to this value
   /// (on all clients). The default value is `null`.
-  final String name;
+  final String? name;
 
   /// Whether to publish audio (YES, the default) or not (NO).
   /// If this property is set to NO, the audio subsystem will not be initialized
@@ -375,7 +375,7 @@ class OTPublisherKitSettings {
   /// it is recommended to set this Builder property rather than use the
   /// <[OTPublisherKit publishAudio]> property, which only temporarily disables
   /// the audio track.
-  final bool audioTrack;
+  final bool? audioTrack;
 
   /// Whether to publish video (YES, the default) or not (NO).
   /// If this property is set to NO, the video subsystem will not be initialized
@@ -384,7 +384,7 @@ class OTPublisherKitSettings {
   /// it is recommended to set this Builder property rather than use the
   /// <[OTPublisherKit publishVideo]> property, which only temporarily disables
   /// the video track.
-  final bool videoTrack;
+  final bool? videoTrack;
 
   /// The desired bitrate for the published audio, in bits per second.
   /// The supported range of values is 6,000 - 510,000. (Invalid values are
@@ -400,11 +400,11 @@ class OTPublisherKitSettings {
   /// 64,000 - 128,000 for full-band (FB) stereo music
   ///
   /// The default value is [OpenTokAudioBitrateDefault].
-  final int audioBitrate;
+  final int? audioBitrate;
 
-  final OTCameraCaptureResolution cameraResolution;
+  final OTCameraCaptureResolution? cameraResolution;
 
-  final OTCameraCaptureFrameRate cameraFrameRate;
+  final OTCameraCaptureFrameRate? cameraFrameRate;
 
   factory OTPublisherKitSettings.fromJson(Map<String, dynamic> json) =>
       _$OTPublisherKitSettingsFromJson(json);
