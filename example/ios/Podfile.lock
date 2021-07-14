@@ -1,10 +1,10 @@
 PODS:
   - Flutter (1.0.0)
-  - ondoc_flut_opentok (0.0.16):
+  - ondoc_flut_opentok (0.0.17):
     - Flutter
-    - OpenTok (= 2.19.0)
+    - OpenTok (= 2.20.0)
     - SnapKit (~> 5.0.1)
-  - OpenTok (2.19.0)
+  - OpenTok (2.20.0)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
@@ -24,10 +24,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  ondoc_flut_opentok: de3c75d976d8eed50243c7e66d6c99ac45b5015d
-  OpenTok: 3ac356cce06545a573234582702abaf671d44909
+  ondoc_flut_opentok: d86db5a6489d7f80279afea3d3f8c697526049d7
+  OpenTok: 414c2c1dc6486f1897015e4d1703558d5eed48c3
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: c131917ade7909ffba4175eb2a45402e1adab94f
+PODFILE CHECKSUM: a798fe452cbf2086321c8b04a0fa5621d438f443
 
 COCOAPODS: 1.10.1
