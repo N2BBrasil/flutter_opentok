@@ -1,6 +1,6 @@
 name: ondoc_flut_opentok
 description: Ondoc OpenTok Flutter
-version: 0.0.17
+version: 0.0.18
 homepage: https://github.com/ninjasolutions/ondoc_flutter_opentok
 
 environment:
