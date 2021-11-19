@@ -3,6 +3,7 @@ package com.flutter_opentok
 import android.content.Context
 import android.graphics.Color
 import android.opengl.GLSurfaceView
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -10,15 +11,15 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.opentok.android.AudioDeviceManager
 import com.opentok.android.BaseAudioDevice
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 import kotlinx.serialization.json.Json
 
 
 class FlutterOpenTokView(
-        var registrar: PluginRegistry.Registrar,
+        var binaryMessenger: BinaryMessenger,
         override var context: Context,
         var viewId: Int,
         var args: Any?) : PlatformView, MethodChannel.MethodCallHandler, VoIPProviderDelegate, View.OnTouchListener {
@@ -35,7 +36,7 @@ class FlutterOpenTokView(
 
     init {
         val channelName = "plugins.indoor.solutions/opentok_$viewId"
-        channel = MethodChannel(registrar.messenger(), channelName)
+        channel = MethodChannel(binaryMessenger, channelName)
 
         val arguments: Map<*, *>? = args as? Map<*, *>
         if (arguments?.containsKey("height") == true)
@@ -54,7 +55,7 @@ class FlutterOpenTokView(
 
         val publisherArg = arguments?.get("publisherSettings") as? String
         try {
-            publisherSettings = publisherArg?.let { Json.parse(PublisherSettings.serializer(), it) }
+            publisherSettings = publisherArg?.let { Json.decodeFromString(PublisherSettings.serializer(), it) }
         } catch (e: Exception) {
             if (FlutterOpentokPlugin.loggingEnabled) {
                 print("OpenTok publisher settings error: ${e.message}")
