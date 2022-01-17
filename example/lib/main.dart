@@ -127,8 +127,6 @@ class _MyAppState extends State<MyApp> {
       return Container(
         child: Container(
           child: views[0],
-          height: 200,
-          width: 200,
         ),
       );
     }
@@ -192,15 +190,17 @@ class _MyAppState extends State<MyApp> {
       audioTrack: true,
       videoTrack: publishVideo,
       audioBitrate: 40000,
-      cameraResolution: OTCameraCaptureResolution.OTCameraCaptureResolutionHigh,
-      cameraFrameRate: OTCameraCaptureFrameRate.OTCameraCaptureFrameRate30FPS,
+      cameraResolution: OTCameraCaptureResolution.OTCameraCaptureResolutionLow,
     );
-    Widget view = OTFlutter.createNativeView(uid,
-        publisherSettings: publisherSettings, created: (viewId) async {
-      controller = await OTFlutter.init(viewId);
+    Widget view = OTFlutter.createNativeView(
+      uid: uid,
+      publisherSettings: publisherSettings,
+      created: (viewId) async {
+        controller = await OTFlutter.init(viewId);
 
-      await controller.create(openTokConfiguration);
-    });
+        await controller.create(openTokConfiguration);
+      },
+    );
 
     VideoSession session = VideoSession(uid, view);
     _sessions.add(session);

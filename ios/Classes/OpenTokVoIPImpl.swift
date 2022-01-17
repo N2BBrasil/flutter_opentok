@@ -238,7 +238,7 @@ private extension OpenTokVoIPImpl {
 
         publisher = OTPublisher(delegate: self, settings: settings)
         publisher.cameraPosition = .front
-        publisher.publishVideo = false
+        publisher.publishVideo = publisherSettings?.videoInitialized ?? true
 
         // Publish publisher to session
         var error: OTError?

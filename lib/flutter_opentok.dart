@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:json_annotation/json_annotation.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'flutter_opentok.g.dart';
 
@@ -47,7 +48,6 @@ class OTFlutter {
 
   /// Occurs when publisher stream has been created.
   static VoidCallback? onCreatePublisherStream;
-
 
   // Core Methods
   /// Creates an OpenTok instance.
@@ -155,40 +155,23 @@ class OTFlutter {
 
   /// Creates the video renderer Widget.
   ///
-  static Widget createNativeView(
-    int uid, {
-    OTPublisherKitSettings? publisherSettings,
-    int? width,
-    int? height,
-    Function(int viewId)? created,
+  static Widget createNativeView({
+    required int uid,
+    required OTPublisherKitSettings publisherSettings,
+    required Function(int viewId) created,
   }) {
-    Map<String, dynamic> creationParams = {};
-
-    if (width != null && height != null) {
-      creationParams["width"] = width;
-      creationParams["height"] = height;
-    }
-
-    if (publisherSettings != null) {
-      creationParams["publisherSettings"] =
-          jsonEncode(publisherSettings.toJson());
-    }
-
-    creationParams["loggingEnabled"] = OTFlutter.loggingEnabled;
-
-    if (OTFlutter.loggingEnabled) {
-      print(creationParams);
-    }
+    Map<String, dynamic> creationParams = {
+      'publisherSettings': jsonEncode(
+        publisherSettings.toJson(),
+      ),
+      'loggingEnabled': OTFlutter.loggingEnabled,
+    };
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
         key: new ObjectKey(uid.toString()),
         viewType: 'OpenTokRendererView',
-        onPlatformViewCreated: (viewId) {
-          if (created != null) {
-            created(viewId);
-          }
-        },
+        onPlatformViewCreated: (viewId) => created(viewId),
         creationParams: creationParams,
         creationParamsCodec: StandardMessageCodec(),
       );
@@ -196,11 +179,7 @@ class OTFlutter {
       return AndroidView(
         key: new ObjectKey(uid.toString()),
         viewType: 'OpenTokRendererView',
-        onPlatformViewCreated: (viewId) {
-          if (created != null) {
-            created(viewId);
-          }
-        },
+        onPlatformViewCreated: (viewId) => created(viewId),
         creationParams: creationParams,
         creationParamsCodec: StandardMessageCodec(),
       );
@@ -361,7 +340,10 @@ class OTPublisherKitSettings {
     this.audioBitrate,
     this.cameraResolution,
     this.cameraFrameRate,
+    this.videoInitialized,
   });
+
+  final bool? videoInitialized;
 
   /// The name of the publisher video. The <[OTStream name]> property
   /// for a stream published by this publisher will be set to this value

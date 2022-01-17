@@ -1,6 +1,7 @@
 package com.flutter_opentok
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import com.opentok.android.*
 
@@ -18,6 +19,8 @@ interface VoIPProviderDelegate {
 
 
 interface VoIPProvider {
+    var publisher: Publisher?
+    var subscriber: Subscriber?
     /// Whether VoIP connection has been established.
     val isConnected: Boolean
 
@@ -41,11 +44,11 @@ interface VoIPProvider {
 
 class OpenTokVoIPImpl(
         var delegate: VoIPProviderDelegate?,
-        var publisherSettings: PublisherSettings?) : VoIPProvider, Session.SessionListener, PublisherKit.PublisherListener {
-
+        var publisherSettings: PublisherSettings?,
+        override var publisher: Publisher? = null,
+        override var subscriber: Subscriber? = null
+        ) : VoIPProvider, Session.SessionListener, PublisherKit.PublisherListener {
     private var session: Session? = null
-    private var publisher: Publisher? = null
-    private var subscriber: Subscriber? = null
     private var videoReceived: Boolean = false
 
     val subscriberView: View?
@@ -244,12 +247,28 @@ class OpenTokVoIPImpl(
                 .audioTrack(publisherSettings?.audioTrack ?: true)
                 .videoTrack(publisherSettings?.videoTrack ?: true)
                 .audioBitrate(publisherSettings?.audioBitrate ?: 400000)
-                .frameRate(Publisher.CameraCaptureFrameRate.FPS_30)
-                .resolution(Publisher.CameraCaptureResolution.HIGH)
+                .frameRate(publisherSettings?.cameraFrameRate?.let {
+                    when(it) {
+                        "OTCameraCaptureFrameRate30FPS" -> Publisher.CameraCaptureFrameRate.FPS_30
+                        "OTCameraCaptureFrameRate15FPS" -> Publisher.CameraCaptureFrameRate.FPS_15
+                        "OTCameraCaptureFrameRate7FPS" -> Publisher.CameraCaptureFrameRate.FPS_7
+                        "OTCameraCaptureFrameRate1FPS" -> Publisher.CameraCaptureFrameRate.FPS_1
+                        else -> Publisher.CameraCaptureFrameRate.FPS_30
+                    }
+                } ?: Publisher.CameraCaptureFrameRate.FPS_30)
+                .resolution(publisherSettings?.cameraResolution?.let {
+                    when(it) {
+                        "OTCameraCaptureResolutionHigh" -> Publisher.CameraCaptureResolution.HIGH
+                        "OTCameraCaptureResolutionMedium" -> Publisher.CameraCaptureResolution.MEDIUM
+                        "OTCameraCaptureResolutionLow" -> Publisher.CameraCaptureResolution.LOW
+                        else -> Publisher.CameraCaptureResolution.HIGH
+                    }
+                } ?: Publisher.CameraCaptureResolution.HIGH)
                 .build()
 
+        publisher?.renderer?.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL)
+        publisher?.publishVideo = publisherSettings?.videoInitialized ?: true
         publisher?.setPublisherListener(this)
-        publisher?.publishVideo = false
         session?.publish(publisher)
     }
 
@@ -269,6 +288,7 @@ class OpenTokVoIPImpl(
         }
 
         subscriber = Subscriber.Builder(delegate?.context, stream).build()
+        subscriber?.renderer?.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL)
         session?.subscribe(subscriber)
     }
 
