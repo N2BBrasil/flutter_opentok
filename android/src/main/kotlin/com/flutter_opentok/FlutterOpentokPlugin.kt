@@ -14,7 +14,10 @@ class FlutterOpentokPlugin : FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
     binding.platformViewRegistry.registerViewFactory(
       "OpenTokRendererView",
-      FlutterOpenTokViewFactory(binding.binaryMessenger)
+      FlutterOpenTokViewFactory(
+        binding.binaryMessenger,
+        binding.applicationContext,
+      )
     )
   }
 

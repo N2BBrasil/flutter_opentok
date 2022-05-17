@@ -1,13 +1,11 @@
 package com.flutter_opentok
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
 import android.opengl.GLSurfaceView
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.opentok.android.AudioDeviceManager
@@ -160,26 +158,7 @@ class FlutterOpenTokView(
     }
 
     private fun channelInvokeMethod(method: String, arguments: Any?) {
-        channel.invokeMethod(method, arguments, object: MethodChannel.Result {
-            override fun notImplemented() {
-                if (FlutterOpentokPlugin.loggingEnabled) {
-                    print ("Method $method is not implemented")
-                }
-            }
-
-            override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
-                if (FlutterOpentokPlugin.loggingEnabled) {
-                    print ("Method $method failed with error $errorMessage")
-                }
-            }
-
-            override fun success(result: Any?) {
-                if (FlutterOpentokPlugin.loggingEnabled) {
-                    print ("Method $method succeeded")
-                }
-            }
-
-        })
+        channel.invokeMethod(method, arguments)
     }
 
 
