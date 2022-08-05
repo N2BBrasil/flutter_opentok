@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ondoc_flutter_opentok/flutter_opentok.dart';
+import 'package:ondoc_flut_opentok/flutter_opentok.dart';
+
 import 'settings.dart';
 import 'video_session.dart';
 
@@ -123,8 +124,10 @@ class _MyAppState extends State<MyApp> {
   Widget _viewRows() {
     List<Widget> views = _getRenderViews();
     if (views.isNotEmpty) {
-      return Container (
-        child: Expanded(child: views[0]),
+      return Container(
+        child: Container(
+          child: views[0],
+        ),
       );
     }
 
@@ -151,16 +154,14 @@ class _MyAppState extends State<MyApp> {
                         padding:
                             EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                         child: Row(mainAxisSize: MainAxisSize.min, children: [
-                          Flexible(
-                              child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.yellowAccent,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Text(_infoStrings[index],
-                                      style:
-                                          TextStyle(color: Colors.blueGrey))))
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.yellowAccent,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(_infoStrings[index],
+                                  style: TextStyle(color: Colors.blueGrey)))
                         ]));
                   })),
         ));
@@ -176,20 +177,30 @@ class _MyAppState extends State<MyApp> {
       print("onSessionDisconnect");
     };
 
+    OTFlutter.onCreateStream = () {
+      print("Subscriber entro");
+    };
+
+    OTFlutter.onDroppedStream = () {
+      print("Subscriber saiu");
+    };
+
     var publisherSettings = OTPublisherKitSettings(
       name: "Mr. John Doe",
       audioTrack: true,
       videoTrack: publishVideo,
       audioBitrate: 40000,
-      cameraResolution: OTCameraCaptureResolution.OTCameraCaptureResolutionHigh,
-      cameraFrameRate: OTCameraCaptureFrameRate.OTCameraCaptureFrameRate30FPS,
+      cameraResolution: OTCameraCaptureResolution.OTCameraCaptureResolutionLow,
     );
-    Widget view = OTFlutter.createNativeView(uid,
-        publisherSettings: publisherSettings, created: (viewId) async {
-      controller = await OTFlutter.init(viewId);
+    Widget view = OTFlutter.createNativeView(
+      uid: uid,
+      publisherSettings: publisherSettings,
+      created: (viewId) async {
+        controller = await OTFlutter.init(viewId);
 
-      await controller.create(openTokConfiguration);
-    });
+        await controller.create(openTokConfiguration);
+      },
+    );
 
     VideoSession session = VideoSession(uid, view);
     _sessions.add(session);

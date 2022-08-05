@@ -1,21 +1,28 @@
 package com.flutter_opentok
 
+import androidx.annotation.NonNull
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.PluginRegistry.Registrar
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
-class FlutterOpentokPlugin : MethodChannel.MethodCallHandler {
+class FlutterOpentokPlugin : FlutterPlugin, MethodCallHandler {
+  private lateinit var channel : MethodChannel
 
-  companion object {
-    var loggingEnabled = false
+  override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    channel = MethodChannel(binding.binaryMessenger, "flutter_opentok")
+    channel.setMethodCallHandler(this)
+    binding.platformViewRegistry.registerViewFactory(
+      "OpenTokRendererView",
+      FlutterOpenTokViewFactory(
+        binding.binaryMessenger,
+        binding.applicationContext,
+      )
+    )
+  }
 
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "flutter_opentok")
-      channel.setMethodCallHandler(FlutterOpentokPlugin())
-
-      registrar.platformViewRegistry().registerViewFactory("OpenTokRendererView", FlutterOpenTokViewFactory(registrar));
-    }
+  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    channel.setMethodCallHandler(null)
   }
 
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
@@ -26,4 +33,7 @@ class FlutterOpentokPlugin : MethodChannel.MethodCallHandler {
     }
   }
 
+  companion object {
+    var loggingEnabled = true
+  }
 }

@@ -9,4 +9,6 @@ data class PublisherSettings(
         var videoTrack: Boolean?,
         var audioBitrate: Int?,
         var cameraResolution: String?,
-        var cameraFrameRate: String?)
+        var cameraFrameRate: String?,
+        var videoInitialized: Boolean?,
+)

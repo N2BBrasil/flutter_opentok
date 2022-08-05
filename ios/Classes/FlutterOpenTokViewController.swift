@@ -19,13 +19,6 @@ class FlutterOpenTokViewController: NSObject, FlutterPlatformView {
 
     // Publisher settings
     var publisherSettings: PublisherSettings?
-
-    var screenHeight: Int?
-    var screenWidth: Int?
-    
-    var publisherHeight: Int = 140
-    var publisherWidth: Int = 140
-
     var enablePublisherVideo: Bool?
 
     /// Is audio switched to speaker
@@ -46,22 +39,6 @@ class FlutterOpenTokViewController: NSObject, FlutterPlatformView {
         openTokView = UIView(frame: self.frame)
         openTokView.isOpaque = true
         
-        if let arguments = args as? [String: Any],
-            let width = arguments["width"] as? Int,
-            let height = arguments["height"] as? Int {
-            screenHeight = height
-            screenWidth = width
-            
-            
-        }
-        
-        if let arguments = args as? [String: Any],
-            let pubWidth = arguments["publisherWidth"] as? Int,
-            let pubHeight = arguments["publisherHeight"] as? Int {
-            publisherWidth = pubWidth
-            publisherHeight = pubHeight
-        }
-
         // Decode publisher settings.
         if let arguments = args as? [String: Any],
             let publisherArg = arguments["publisherSettings"] as? String {
@@ -74,10 +51,6 @@ class FlutterOpenTokViewController: NSObject, FlutterPlatformView {
                     print("OpenTok publisher settings error: \(error.localizedDescription)")
                 }
             }
-        }
-
-        if SwiftFlutterOpentokPlugin.loggingEnabled {
-            print("[FlutterOpenTokViewController] initialized with size: \(screenWidth ?? 100) (w) x \(screenHeight ?? 100) (h)")
         }
 
         super.init()
@@ -202,11 +175,11 @@ extension FlutterOpenTokViewController: FlutterViewControllerImpl {
             result(nil)
         } else if call.method == "enablePublisherVideo" {
             provider?.enablePublisherVideo()
-            refreshViews()
+            os_log("[OpenTokVoIPImpl] enable")
             result(nil)
         } else if call.method == "disablePublisherVideo" {
+            os_log("[OpenTokVoIPImpl] disable")
             provider?.disablePublisherVideo()
-            refreshViews()
             result(nil)
         } else if call.method == "unmutePublisherAudio" {
             provider?.unmutePublisherAudio()
@@ -266,6 +239,7 @@ extension FlutterOpenTokViewController: FlutterViewControllerImpl {
 extension FlutterOpenTokViewController: VoIPProviderDelegate {
     func didCreateStream() {
         channelInvokeMethod("onCreateStream", arguments: nil)
+        refreshViews()
     }
 
     func didDropStream() {
@@ -280,7 +254,7 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
     func willConnect() {
         channelInvokeMethod("onWillConnect", arguments: nil)
     }
-
+    
     func didConnect() {
         configureAudioSession()
         refreshViews()
@@ -307,6 +281,7 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
                 subView.removeFromSuperview()
             }
         }
+        
         if let view = self.subscriperView {
             openTokView.addSubview(view)
             view.backgroundColor = .black
@@ -316,25 +291,33 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
                 make.bottom.equalTo(openTokView)
                 make.right.equalTo(openTokView)
             }
+            
         }
+        
         if provider.isAudioOnly == false {
             if let view = self.publisherView {
                 openTokView.addSubview(view)
+                openTokView.bringSubviewToFront(self.publisherView!)
+                self.publisherView!.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panView)))
                 view.backgroundColor = .black
                 view.snp.makeConstraints { (make) -> Void in
                     make.right.equalTo(openTokView)
-                    make.bottom.equalTo(openTokView).offset(-120)
-                    make.height.equalTo(publisherHeight)
-                    make.width.equalTo(publisherWidth)
+                    make.bottom.equalTo(openTokView).offset(-16)
+                    make.right.equalTo(openTokView).offset(-16)
+                    
+                    let layoutDimension = self.openTokView.frame.width / 3;
+                    
+                    make.width.equalTo(self.openTokView.frame.width / 3)
+                    make.height.equalTo(layoutDimension + (layoutDimension / 3))
                 }
             }
         }
     }
     
-    @objc func panView(sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: self.openTokView)
+    @objc func panView(gesture: UIPanGestureRecognizer){
+        let translation = gesture.translation(in: self.view())
 
-        if let viewToDrag = sender.view {
+        if let viewToDrag = gesture.view {
             let halfWidth = viewToDrag.frame.width / 2
             let halfHeight = viewToDrag.frame.height / 2
             
@@ -354,7 +337,7 @@ extension FlutterOpenTokViewController: VoIPProviderDelegate {
               y = self.openTokView.frame.height - halfHeight
             }
             viewToDrag.center = CGPoint(x: x, y: y)
-            sender.setTranslation(CGPoint(x: 0, y: 0), in: viewToDrag)
+            gesture.setTranslation(CGPoint(x: 0, y: 0), in: viewToDrag)
         }
     }
 }
@@ -379,4 +362,5 @@ struct PublisherSettings: Codable {
     var audioBitrate: Int?
     var cameraResolution: OTCameraCaptureResolution?
     var cameraFrameRate: OTCameraCaptureFrameRate?
+    var videoInitialized: Bool?
 }
