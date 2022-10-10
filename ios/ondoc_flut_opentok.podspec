@@ -4,7 +4,7 @@
 require 'yaml'
 pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
 libraryVersion = pubspec['version'].gsub('+', '-')
-openTokLibraryVersion = '2.21.3'
+openTokLibraryVersion = '2.21.5'
 
 Pod::Spec.new do |s|
   s.name             = 'ondoc_flut_opentok'
