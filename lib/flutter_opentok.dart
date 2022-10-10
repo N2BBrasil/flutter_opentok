@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -176,12 +178,30 @@ class OTFlutter {
         creationParamsCodec: StandardMessageCodec(),
       );
     } else if (defaultTargetPlatform == TargetPlatform.android) {
-      return AndroidView(
-        key: new ObjectKey(uid.toString()),
+      return PlatformViewLink(
         viewType: 'OpenTokRendererView',
-        onPlatformViewCreated: (viewId) => created(viewId),
-        creationParams: creationParams,
-        creationParamsCodec: StandardMessageCodec(),
+        surfaceFactory: (
+          BuildContext context,
+          PlatformViewController controller,
+        ) {
+          return AndroidViewSurface(
+            controller: controller as AndroidViewController,
+            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+          );
+        },
+        onCreatePlatformView: (PlatformViewCreationParams params) {
+          return PlatformViewsService.initExpensiveAndroidView(
+            id: params.id,
+            viewType: 'OpenTokRendererView',
+            layoutDirection: TextDirection.ltr,
+            creationParams: creationParams,
+            creationParamsCodec: StandardMessageCodec(),
+          )
+            ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+            ..addOnPlatformViewCreatedListener((viewId) => created(viewId))
+            ..create();
+        },
       );
     }
 
