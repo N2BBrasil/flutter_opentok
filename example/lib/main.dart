@@ -121,10 +121,12 @@ class _MyAppState extends State<MyApp> {
     return _sessions.map((session) => session.view).toList();
   }
 
-  Widget _viewRows() {
+  Widget _viewRows(BuildContext context) {
     List<Widget> views = _getRenderViews();
     if (views.isNotEmpty) {
       return Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.amber,
         child: Container(
           child: views[0],
         ),
@@ -238,14 +240,24 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('OpenTok SDK'),
+        appBar: AppBar(
+          title: const Text('OpenTok SDK'),
+        ),
+        backgroundColor: Colors.red,
+        body: Center(
+          child: Stack(
+            children: <Widget>[
+              Builder(
+                builder: (context) {
+                  return _viewRows(context);
+                }
+              ),
+              _panel(),
+              _toolbar(),
+            ],
           ),
-          backgroundColor: Colors.black,
-          body: Center(
-              child: Stack(
-            children: <Widget>[_viewRows(), _panel(), _toolbar()],
-          ))),
+        ),
+      ),
     );
   }
 }
